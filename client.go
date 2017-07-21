@@ -156,7 +156,8 @@ func (c *Client) do(req *Request) (resp *Response) {
 	if !req.NoResume && (resp.fi != nil || resp.Filename == "") {
 		hreq := new(http.Request)
 		*hreq = *req.HTTPRequest
-		hreq.Method = "HEAD"
+		hreq.Method = "GET"
+		hreq.Header.Add("Range", "byte=0-0")
 		if ok, err := c.doHTTPRequest(hreq, resp); ok || err != nil {
 			resp.close(err)
 			return
